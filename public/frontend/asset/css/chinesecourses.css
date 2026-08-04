@@ -1,0 +1,235 @@
+/* ---------- Tabs (trạng thái học) ---------- */
+.status-tabs {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+.status-tab {
+  border: 1.5px solid var(--border);
+  background: var(--card);
+  color: var(--text-muted);
+  font-weight: 600;
+  font-size: 0.85rem;
+  border-radius: 999px;
+  padding: 0.5rem 1.1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.15s ease;
+}
+.status-tab .count {
+  background: var(--border);
+  color: var(--text-muted);
+  border-radius: 999px;
+  padding: 0.05rem 0.5rem;
+  font-size: 0.72rem;
+}
+.status-tab.active {
+  border-color: var(--primary);
+  background: var(--primary);
+  color: #fff;
+}
+.status-tab.active .count {
+  background: rgba(255, 255, 255, 0.25);
+  color: #fff;
+}
+
+/* ---------- Search + filter bar ---------- */
+.filter-bar {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+.filter-chip {
+  border: 1.5px solid var(--border);
+  background: var(--card);
+  color: var(--text);
+  font-weight: 600;
+  font-size: 0.82rem;
+  border-radius: 999px;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+.filter-chip:hover {
+  border-color: var(--primary);
+}
+.filter-chip.active {
+  border-color: var(--primary);
+  background: color-mix(in srgb, var(--primary) 10%, var(--card));
+  color: var(--primary);
+}
+.sort-select {
+  border-radius: 999px;
+  border: 1.5px solid var(--border);
+  padding: 0.55rem 2rem 0.55rem 1rem;
+  background: var(--card);
+  color: var(--text);
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-left: auto;
+}
+
+/* ---------- Course card ---------- */
+.course-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+.course-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 34px -18px rgba(17, 24, 39, 0.25);
+}
+.course-cover {
+  aspect-ratio: 16 / 9;
+  width: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--primary), #f97316);
+}
+.course-cover .zh {
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 2.2rem;
+  font-weight: 700;
+}
+.course-cover .level-badge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(0, 0, 0, 0.35);
+  color: #fff;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  backdrop-filter: blur(4px);
+}
+.course-cover .save-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  color: var(--primary);
+}
+.course-body {
+  padding: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  flex: 1;
+}
+.course-title {
+  font-family: var(--font-head);
+  font-weight: 700;
+  font-size: 0.98rem;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  min-height: 2.548rem;
+}
+.course-meta {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+.course-meta span {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.course-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+  padding-top: 0.4rem;
+}
+.price-tag {
+  font-weight: 800;
+  color: var(--primary);
+  font-family: var(--font-head);
+}
+.btn-continue {
+  background: var(--primary);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 0.4rem 1rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+.btn-outline-brand-sm {
+  border: 1.5px solid var(--border);
+  background: transparent;
+  color: var(--text);
+  border-radius: 999px;
+  padding: 0.4rem 1rem;
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+/* skeleton loading state */
+.skel {
+  background: linear-gradient(
+    90deg,
+    var(--border) 25%,
+    color-mix(in srgb, var(--primary) 12%, var(--border)) 50%,
+    var(--border) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.6s ease-in-out infinite;
+  border-radius: 8px;
+}
+@keyframes shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* empty state */
+.empty-state {
+  text-align: center;
+  padding: 3.5rem 1rem;
+}
+.empty-state .zh {
+  font-size: 3rem;
+  color: var(--border);
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.results-count {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+}

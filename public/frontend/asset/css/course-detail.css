@@ -1,0 +1,193 @@
+/* Course Detail CSS */
+
+/* Hero Banner */
+.cd-hero {
+  background: linear-gradient(135deg, #111827, #1f2937); /* Dark background */
+  color: #fff;
+  padding: 2.5rem 0 6rem 0; /* extra padding bottom to account for floating card */
+  position: relative;
+}
+[data-theme="dark"] .cd-hero {
+  background: linear-gradient(135deg, #0a0a0a, #111827);
+}
+.cd-hero-content {
+  max-width: 750px;
+}
+.cd-hero .breadcrumb {
+  margin-bottom: 1.5rem;
+}
+.cd-hero .breadcrumb a {
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+.cd-hero .breadcrumb a:hover {
+  color: #fff;
+}
+.cd-hero .breadcrumb-item + .breadcrumb-item::before {
+  content: "›";
+  color: rgba(255,255,255,0.5);
+}
+.cd-hero .breadcrumb-item.active {
+  color: #fff;
+}
+
+.cd-title {
+  font-family: var(--font-head);
+  font-size: 2.5rem;
+  font-weight: 800;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+}
+.cd-subtitle {
+  font-size: 1.15rem;
+  opacity: 0.9;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+.cd-meta {
+  display: flex; gap: 1.5rem; flex-wrap: wrap; align-items: center;
+  font-size: 0.95rem; opacity: 0.9;
+}
+.cd-meta-item {
+  display: flex; align-items: center; gap: 0.4rem;
+}
+.cd-instructor {
+  display: flex; align-items: center; gap: 0.75rem; margin-top: 1.5rem;
+}
+.cd-instructor img {
+  width: 44px; height: 44px; border-radius: 50%; object-fit: cover; border: 2px solid rgba(255,255,255,0.2);
+}
+
+/* Floating Card */
+.cd-floating-card {
+  background: var(--card);
+  color: var(--text);
+  border-radius: 20px;
+  padding: 1.5rem;
+  box-shadow: 0 20px 50px -10px rgba(0,0,0,0.2);
+  border: 1px solid var(--border);
+  margin-top: -200px; /* Pulls it up into the hero section */
+  position: sticky;
+  top: 100px;
+  z-index: 10;
+}
+.cd-preview-container {
+  position: relative;
+  cursor: pointer;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 1.5rem;
+  aspect-ratio: 16/9;
+}
+.cd-preview-container img {
+  width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s ease;
+}
+.cd-preview-container:hover img {
+  transform: scale(1.05);
+}
+.cd-play-btn {
+  position: absolute;
+  top: 50%; left: 50%; transform: translate(-50%, -50%);
+  width: 64px; height: 64px;
+  background: rgba(255,255,255,0.95);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  color: var(--primary);
+  transition: all 0.2s;
+  z-index: 2;
+}
+.cd-preview-container:hover .cd-play-btn {
+  transform: translate(-50%, -50%) scale(1.1);
+  background: #fff;
+}
+.cd-price-tag {
+  font-family: var(--font-head);
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 1.25rem;
+}
+.cd-includes {
+  list-style: none; padding: 0; margin: 1.5rem 0 0 0;
+}
+.cd-includes li {
+  display: flex; align-items: center; gap: 0.75rem;
+  margin-bottom: 0.85rem; color: var(--text-muted); font-size: 0.95rem;
+}
+
+/* Main Content area */
+.cd-content-section {
+  margin-bottom: 4rem;
+}
+.cd-section-title {
+  font-family: var(--font-head); font-weight: 800; font-size: 1.5rem; margin-bottom: 1.5rem; color: var(--text);
+}
+.cd-about-text {
+  font-size: 1.05rem; line-height: 1.7; color: var(--text-muted);
+}
+
+/* What you will learn grid */
+.cd-learn-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  background: color-mix(in srgb, var(--border) 20%, var(--card));
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 1.5rem;
+}
+.cd-learn-item {
+  display: flex; align-items: flex-start; gap: 0.75rem;
+  font-size: 0.95rem; color: var(--text-muted);
+}
+.cd-learn-item svg {
+  color: var(--success); flex-shrink: 0; margin-top: 0.15rem;
+}
+
+/* Curriculum Accordion */
+.cd-accordion .accordion-item {
+  border: 1px solid var(--border); border-radius: 12px !important; overflow: hidden; margin-bottom: 1rem;
+  background: var(--card);
+}
+.cd-accordion .accordion-button {
+  font-weight: 700; font-family: var(--font-head); padding: 1.25rem 1.5rem; background: var(--card); color: var(--text);
+  font-size: 1.1rem;
+}
+.cd-accordion .accordion-button:not(.collapsed) {
+  background: color-mix(in srgb, var(--primary) 5%, var(--card)); color: var(--primary); box-shadow: none;
+}
+.cd-accordion .accordion-button:focus {
+  box-shadow: none; border-color: var(--primary);
+}
+.cd-accordion .accordion-body {
+  padding: 0 1.5rem;
+}
+.lesson-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 1rem 0; border-bottom: 1px dashed var(--border);
+}
+.lesson-row:last-child { border-bottom: none; }
+.lesson-title { display: flex; align-items: center; gap: 0.75rem; font-weight: 500; color: var(--text); }
+.lesson-meta { font-size: 0.85rem; color: var(--text-muted); display: flex; align-items: center; justify-content: flex-end; gap: 1rem; min-width: 120px; }
+.lesson-meta > span { width: 40px; text-align: right; }
+.lesson-preview-btn {
+  color: var(--primary); text-decoration: none; font-size: 0.85rem; font-weight: 600;
+  display: inline-block; width: 60px; text-align: right;
+}
+.lesson-preview-btn:hover { text-decoration: underline; }
+
+@media (max-width: 991px) {
+  .cd-floating-card {
+    margin-top: 2rem;
+    position: static;
+  }
+  .cd-hero {
+    padding: 3rem 0;
+  }
+  .cd-learn-grid {
+    grid-template-columns: 1fr;
+  }
+}

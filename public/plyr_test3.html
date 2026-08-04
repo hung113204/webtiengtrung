@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Plyr HLS Test 3</title>
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+    <style>
+      :root {
+        --plyr-color-main: #dc2626;
+      }
+    </style>
+</head>
+<body>
+    <video id="player" controls playsinline style="width: 100%; height: 100%;" poster="https://bitdash-a.akamaihd.net/content/sintel/poster.png">
+        <source src="https://bitdash-a.akamaihd.net/content/sintel/hls/playlist.m3u8" type="application/x-mpegURL">
+    </video>
+
+    <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const video = document.getElementById('player');
+        
+        const defaultOptions = {
+            captions: { active: true, language: 'zh', update: true },
+            settings: ['captions', 'speed', 'loop']
+        };
+        
+        const sourceElement = video.querySelector('source[type="application/x-mpegURL"]');
+        let hlsUrl = null;
+
+        if (sourceElement) {
+            hlsUrl = sourceElement.src;
+            sourceElement.remove();
+        }
+
+        const player = new Plyr(video, defaultOptions);
+        window.player = player;
+        
+        if (hlsUrl && Hls.isSupported()) {
+            const hls = new Hls();
+            window.hls = hls;
+
+            hls.loadSource(hlsUrl);
+            hls.attachMedia(video);
+            
+            hls.on(Hls.Events.ERROR, function(e, data) {
+                console.error('HLS Error:', data);
+            });
+        }
+    });
+    </script>
+</body>
+</html>
