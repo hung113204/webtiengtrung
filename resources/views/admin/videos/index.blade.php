@@ -3,6 +3,93 @@
 @section('title', 'Thư viện Video | Admin')
 
 @section('content')
+<style>
+/* Custom Progress Bar CSS */
+.custom-progress-container {
+    width: 150px;
+}
+.custom-progress {
+    height: 8px;
+    border-radius: 10px;
+    background-color: #f3e8e8;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 6px;
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+}
+.custom-progress-bar {
+    height: 100%;
+    border-radius: 10px;
+    background: linear-gradient(90deg, #8b1f23, #d95a28, #f4cd7a);
+    position: relative;
+    transition: width 0.3s ease;
+}
+.custom-progress-bar::after {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
+    background-image: linear-gradient(
+        -45deg, 
+        rgba(255, 255, 255, 0.25) 25%, 
+        transparent 25%, 
+        transparent 50%, 
+        rgba(255, 255, 255, 0.25) 50%, 
+        rgba(255, 255, 255, 0.25) 75%, 
+        transparent 75%, 
+        transparent
+    );
+    background-size: 20px 20px;
+    animation: moveStripes 1s linear infinite;
+}
+@keyframes moveStripes {
+    0% { background-position: 0 0; }
+    100% { background-position: 20px 0; }
+}
+
+/* Step Indicators */
+.step-indicators {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 4px;
+}
+.step-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: #e2e8f0;
+    transition: background-color 0.3s, transform 0.3s, box-shadow 0.3s;
+}
+.step-dot.completed {
+    background-color: #8b1f23;
+}
+.step-dot.active {
+    background-color: #d95a28;
+    box-shadow: 0 0 6px rgba(217, 90, 40, 0.6);
+    transform: scale(1.3);
+}
+
+/* Seal/Stamp completion micro-interaction */
+.seal-completed {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    background-color: #fdf6ec;
+    border: 1px solid #f4cd7a;
+    color: #8b1f23;
+    font-weight: 700;
+    font-size: 0.85em;
+    animation: stampPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    transform-origin: center;
+    box-shadow: 0 2px 4px rgba(217, 90, 40, 0.1);
+}
+@keyframes stampPop {
+    0% { transform: scale(0.5) rotate(-10deg); opacity: 0; }
+    50% { transform: scale(1.1) rotate(5deg); }
+    100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+</style>
 <div class="page-header animate-fade-in delay-1">
   <div>
     <h1 class="fs-4 fw-bold mb-1">Thư viện Video</h1>
@@ -81,9 +168,30 @@
           </td>
           <td class="py-3 video-status-cell" id="video-status-{{ $video->id }}">
             @if($video->trang_thai === 'hoan_thanh')
-                <span class="badge bg-success bg-opacity-10 text-success border border-success-subtle">Hoàn thành</span>
+                <div class="seal-completed">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                    Hoàn tất
+                </div>
             @elseif($video->trang_thai === 'dang_xu_ly')
-                <span class="badge bg-primary bg-opacity-10 text-primary border border-primary-subtle">Đang xử lý ({{ $video->phan_tram }}%)</span>
+                @php $pt = $video->phan_tram ?? 0; @endphp
+                <div class="custom-progress-container">
+                    <div class="d-flex justify-content-between mb-1 small fw-bold" style="color: #7b1e1e;">
+                        <span>Đang xử lý</span>
+                        <span>{{ $pt }}%</span>
+                    </div>
+                    <div class="custom-progress">
+                        <div class="custom-progress-bar" style="width: {{ $pt }}%;"></div>
+                    </div>
+                    <div class="step-indicators">
+                        <div class="step-dot {{ $pt > 0 ? 'completed' : 'active' }}"></div>
+                        <div class="step-dot {{ $pt >= 33 ? ($pt > 33 ? 'completed' : 'active') : '' }}"></div>
+                        <div class="step-dot {{ $pt >= 66 ? ($pt > 66 ? 'completed' : 'active') : '' }}"></div>
+                        <div class="step-dot {{ $pt >= 100 ? 'completed' : '' }}"></div>
+                    </div>
+                </div>
             @elseif($video->trang_thai === 'dang_cho')
                 <span class="badge bg-warning bg-opacity-10 text-warning border border-warning-subtle">Đang chờ</span>
             @else
@@ -209,12 +317,35 @@ document.addEventListener('DOMContentLoaded', function () {
                             if (cell) {
                                 let html = '';
                                 if (video.trang_thai === 'hoan_thanh') {
-                                    html = '<span class="badge bg-success bg-opacity-10 text-success border border-success-subtle">Hoàn thành</span>';
+                                    html = `
+                                    <div class="seal-completed">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                        </svg>
+                                        Hoàn tất
+                                    </div>`;
                                     // Remove from polling if done
                                     const index = pendingVideoIds.indexOf(video.id.toString());
                                     if (index > -1) pendingVideoIds.splice(index, 1);
                                 } else if (video.trang_thai === 'dang_xu_ly') {
-                                    html = `<span class="badge bg-primary bg-opacity-10 text-primary border border-primary-subtle">Đang xử lý (${video.phan_tram}%)</span>`;
+                                    const pt = video.phan_tram || 0;
+                                    html = `
+                                    <div class="custom-progress-container">
+                                        <div class="d-flex justify-content-between mb-1 small fw-bold" style="color: #7b1e1e;">
+                                            <span>Đang xử lý</span>
+                                            <span>${pt}%</span>
+                                        </div>
+                                        <div class="custom-progress">
+                                            <div class="custom-progress-bar" style="width: ${pt}%;"></div>
+                                        </div>
+                                        <div class="step-indicators">
+                                            <div class="step-dot ${pt > 0 ? 'completed' : 'active'}"></div>
+                                            <div class="step-dot ${pt >= 33 ? (pt > 33 ? 'completed' : 'active') : ''}"></div>
+                                            <div class="step-dot ${pt >= 66 ? (pt > 66 ? 'completed' : 'active') : ''}"></div>
+                                            <div class="step-dot ${pt >= 100 ? 'completed' : ''}"></div>
+                                        </div>
+                                    </div>`;
                                 } else if (video.trang_thai === 'dang_cho') {
                                     html = '<span class="badge bg-warning bg-opacity-10 text-warning border border-warning-subtle">Đang chờ</span>';
                                 } else {

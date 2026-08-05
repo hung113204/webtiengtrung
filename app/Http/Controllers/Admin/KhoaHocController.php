@@ -48,8 +48,9 @@ class KhoaHocController extends Controller
     {
         $danhMucs = DanhMucKhoaHoc::all();
         $capDos = CapDoHSK::all();
+        $videos = \App\Models\Video::where('trang_thai', 'hoan_thanh')->latest()->get();
         $khoahoc = new KhoaHoc();
-        return view('admin.khoahoc.create', compact('danhMucs', 'capDos', 'khoahoc'));
+        return view('admin.khoahoc.create', compact('danhMucs', 'capDos', 'videos', 'khoahoc'));
     }
 
     /**
@@ -87,7 +88,8 @@ class KhoaHocController extends Controller
     {
         $danhMucs = DanhMucKhoaHoc::all();
         $capDos = CapDoHSK::all();
-        return view('admin.khoahoc.edit', compact('khoahoc', 'danhMucs', 'capDos'));
+        $videos = \App\Models\Video::where('trang_thai', 'hoan_thanh')->latest()->get();
+        return view('admin.khoahoc.edit', compact('khoahoc', 'danhMucs', 'capDos', 'videos'));
     }
 
     /**

@@ -12,13 +12,24 @@
 @php
     $firstFreeVideo = null;
     $firstIsExternal = 0;
-    if($khoaHoc->chuongHocs) {
-        foreach($khoaHoc->chuongHocs as $chuong) {
-            foreach($chuong->baiHocs as $bai) {
-                if($bai->mien_phi && $bai->video) {
-                    $firstFreeVideo = $bai->video;
-                    $firstIsExternal = preg_match('#^https?://#i', $bai->video) ? 1 : 0;
-                    break 2;
+
+    // Ưu tiên video giới thiệu khóa học trước
+    if (!empty($khoaHoc->video_url)) {
+        $firstFreeVideo = $khoaHoc->video_url;
+        $firstIsExternal = 1;
+    } elseif (!empty($khoaHoc->video_id) && $khoaHoc->videoItem) {
+        $firstFreeVideo = $khoaHoc->videoItem->file_path;
+        $firstIsExternal = 0;
+    } else {
+        // Fallback: lấy video học thử đầu tiên
+        if($khoaHoc->chuongHocs) {
+            foreach($khoaHoc->chuongHocs as $chuong) {
+                foreach($chuong->baiHocs as $bai) {
+                    if($bai->mien_phi && $bai->video) {
+                        $firstFreeVideo = $bai->video;
+                        $firstIsExternal = preg_match('#^https?://#i', $bai->video) ? 1 : 0;
+                        break 2;
+                    }
                 }
             }
         }

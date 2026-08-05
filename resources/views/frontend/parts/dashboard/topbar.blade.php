@@ -1,18 +1,42 @@
+      <style>
+        .sidebar-toggle {
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
+          width: 32px;
+          height: 32px;
+          background: transparent;
+          border: none;
+          border-radius: 6px;
+          color: #64748b;
+          cursor: pointer;
+          transition: all 0.2s ease;
+          /* Căn nút bám sát vào đường kẻ bên trái */
+          margin-left: -1.75rem;
+          margin-right: 0.5rem;
+        }
+        .sidebar-toggle:hover {
+          background-color: #f1f5f9;
+          color: #0f172a;
+        }
+        [data-theme="dark"] .sidebar-toggle {
+          color: #94a3b8;
+        }
+        [data-theme="dark"] .sidebar-toggle:hover {
+          background-color: #334155;
+          color: #f8fafc;
+        }
+      </style>
       <div class="topbar">
         <button
           class="sidebar-toggle"
           id="sidebarToggle"
           aria-label="Mở/đóng menu"
         >
-          <svg
-            width="18"
-            height="18"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path d="M3 12h18M3 6h18M3 18h18" />
+          <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+            <line x1="15" y1="3" x2="15" y2="21"></line>
+            <path d="M10 15l-3-3 3-3"></path>
           </svg>
         </button>
         <div class="search-input-wrap d-none d-md-block">

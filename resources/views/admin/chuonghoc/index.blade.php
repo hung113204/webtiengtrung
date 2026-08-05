@@ -8,10 +8,16 @@
     <h1 class="fs-4 fw-bold mb-1">Quản lý Chương học</h1>
     <p class="text-muted mb-0 small">Thiết lập cấu trúc chương cho từng khóa học.</p>
   </div>
-  <button class="btn btn-primary d-flex align-items-center gap-2 shadow-sm" style="background: var(--admin-primary); border: none;" data-bs-toggle="modal" data-bs-target="#addChapterModal">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
-    Thêm chương học
-  </button>
+  <div class="d-flex gap-2">
+      <button class="btn btn-success d-flex align-items-center gap-2 shadow-sm" data-bs-toggle="modal" data-bs-target="#importExcelModal">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
+        Nhập Excel
+      </button>
+      <button class="btn btn-primary d-flex align-items-center gap-2 shadow-sm" style="background: var(--admin-primary); border: none;" data-bs-toggle="modal" data-bs-target="#addChapterModal">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path></svg>
+        Thêm chương học
+      </button>
+  </div>
 </div>
 
 @if(session('success'))
@@ -164,6 +170,53 @@
       <div class="modal-footer border-top border-light">
         <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy bỏ</button>
         <button type="button" class="btn btn-primary" onclick="document.getElementById('addChapterForm').submit()" style="background: var(--admin-primary); border: none;">Lưu chương học</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Import Excel Modal -->
+<div class="modal fade" id="importExcelModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow" style="background: var(--admin-card);">
+      <div class="modal-header border-bottom border-light">
+        <h5 class="modal-title fw-bold">Nhập Chương học từ Excel</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="{{ route('admin.chuonghoc.import') }}" method="POST" enctype="multipart/form-data" id="importExcelForm">
+          @csrf
+          
+          <div class="mb-3">
+            <label class="form-label fw-medium">Khóa học trực thuộc <span class="text-danger">*</span></label>
+            <select class="form-select" name="id_khoa_hoc" required>
+              <option value="">-- Chọn khóa học --</option>
+              @foreach($khoaHocs as $khoaHoc)
+                <option value="{{ $khoaHoc->id }}">{{ $khoaHoc->ten_khoa_hoc }}</option>
+              @endforeach
+            </select>
+            <small class="text-muted mt-1 d-block">Tất cả các chương trong file Excel sẽ được thêm vào khóa học này.</small>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label fw-medium">File Excel (.xlsx, .xls) <span class="text-danger">*</span></label>
+            <input type="file" class="form-control" name="file" accept=".xlsx, .xls, .csv" required>
+          </div>
+
+          <div class="alert alert-info py-2 small mb-0">
+            <strong>Cấu trúc file Excel yêu cầu (Bỏ qua dòng tiêu đề):</strong>
+            <ul class="mb-0 mt-1 ps-3">
+              <li><strong>Cột A:</strong> Tên chương (Bắt buộc)</li>
+              <li><strong>Cột B:</strong> Thứ tự hiển thị (Số - Bỏ trống sẽ tự tăng)</li>
+              <li><strong>Cột C:</strong> Trạng thái (1: Hiển thị, 0: Ẩn - Mặc định là 1)</li>
+              <li><strong>Cột D:</strong> Mô tả (Không bắt buộc)</li>
+            </ul>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer border-top border-light">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy bỏ</button>
+        <button type="button" class="btn btn-success" onclick="document.getElementById('importExcelForm').submit()">Nhập dữ liệu</button>
       </div>
     </div>
   </div>

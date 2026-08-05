@@ -7,6 +7,8 @@ use App\Models\KhoaHoc;
 use App\Models\KhoaHocYeuCau;
 use App\Http\Requests\Admin\KhoaHocYeuCauRequest;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\KhoaHocYeuCauImport;
 
 class KhoaHocYeuCauController extends Controller
 {
@@ -118,5 +120,25 @@ class KhoaHocYeuCauController extends Controller
             'success' => true,
             'message' => 'Sắp xếp thứ tự thành công!',
         ]);
+    }
+
+    public function import(Request $request)
+    {
+        $request->validate([
+            'khoa_hoc_id' => 'required|exists:khoa_hoc,id',
+            'file' => 'required|mimes:xlsx,xls,csv|max:5120', // 5MB
+        ]);
+
+        $import = new KhoaHocYeuCauImport($request->khoa_hoc_id);
+        Excel::import($import, $request->file('file'));
+
+        $message = sprintf(
+            'Đã import thành công %d yêu cầu, bỏ qua %d bản ghi trùng lặp.',
+            $import->getImportedCount(),
+            $import->getDuplicateCount()
+        );
+
+        return redirect()->route('admin.khoahocyeucau.index')
+                         ->with('success', $message);
     }
 }

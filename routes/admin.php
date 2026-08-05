@@ -70,6 +70,7 @@ Route::prefix('admin')->middleware(['web', 'auth', 'admin.teacher'])->group(func
     ]);
 
     // Quản lý Chương học
+    Route::post('chuonghoc/import', [\App\Http\Controllers\Admin\ChuongHocController::class, 'import'])->name('admin.chuonghoc.import');
     Route::resource('chuonghoc', \App\Http\Controllers\Admin\ChuongHocController::class)->names('admin.chuonghoc')->parameters([
         'chuonghoc' => 'chuonghoc'
     ]);
@@ -90,6 +91,8 @@ Route::prefix('admin')->middleware(['web', 'auth', 'admin.teacher'])->group(func
 
     Route::post('khoa-hoc-yeu-cau/reorder', [KhoaHocYeuCauController::class, 'reorder'])
         ->name('admin.khoahocyeucau.reorder');
+    Route::post('khoa-hoc-yeu-cau/import', [KhoaHocYeuCauController::class, 'import'])
+        ->name('admin.khoahocyeucau.import');
 
     // Quản lý Bài học
     Route::put('baihoc/{baihoc}/video', [\App\Http\Controllers\Admin\BaiHocController::class, 'updateVideo'])->name('admin.baihoc.updateVideo');

@@ -89,6 +89,29 @@
     </div>
 
     <div class="table-card p-4 mb-4">
+      <h2 class="card-title">Video giới thiệu</h2>
+      
+      <div class="mb-3">
+        <label class="form-label fw-bold">Video giới thiệu <span class="fw-normal text-muted">(Chọn Video từ thư viện)</span></label>
+        <select class="form-select @error('video_id') is-invalid @enderror" name="video_id">
+            <option value="">-- Chọn video (không bắt buộc) --</option>
+            @foreach($videos as $video)
+                <option value="{{ $video->id }}" {{ old('video_id', $khoahoc->video_id) == $video->id ? 'selected' : '' }}>
+                    {{ $video->ten_video }}
+                </option>
+            @endforeach
+        </select>
+        @error('video_id')<div class="invalid-feedback">{{ $message }}</div>@enderror
+        
+        <div class="mt-2">
+            <label class="form-label fw-bold mb-1" style="font-size: 0.9em;">Hoặc nhập Link Video (Youtube/Vimeo)</label>
+            <input type="text" class="form-control @error('video_url') is-invalid @enderror" name="video_url" value="{{ old('video_url', $khoahoc->video_url) }}" placeholder="https://www.youtube.com/watch?v=...">
+            @error('video_url')<div class="invalid-feedback">{{ $message }}</div>@enderror
+        </div>
+      </div>
+    </div>
+
+    <div class="table-card p-4 mb-4">
       <h2 class="card-title">Cài đặt xuất bản</h2>
       
       <div class="mb-3">

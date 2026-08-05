@@ -17,6 +17,8 @@ class KhoaHoc extends Model
         'mo_ta_ngan',
         'mo_ta',
         'anh_bia',
+        'video_id',
+        'video_url',
         'gia',
         'gia_giam',
         'id_cap_do_hsk',
@@ -49,7 +51,12 @@ class KhoaHoc extends Model
 
     public function danhGias()
     {
-        return $this->hasMany(DanhGia::class, 'id_khoa_hoc', 'id');
+        return $this->hasMany(DanhGia::class, 'id_khoa_hoc')->orderBy('created_at', 'desc');
+    }
+
+    public function videoItem()
+    {
+        return $this->belongsTo(Video::class, 'video_id');
     }
 
     /**

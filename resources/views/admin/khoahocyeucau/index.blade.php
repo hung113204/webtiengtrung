@@ -8,10 +8,16 @@
     <h1 class="fs-4 fw-bold mb-1">Quản lý Yêu cầu khóa học</h1>
     <p class="text-muted mb-0 small">Thiết lập các yêu cầu đầu vào cho từng khóa học.</p>
   </div>
-  <button class="btn btn-primary d-flex align-items-center gap-2 shadow-sm" style="background: var(--admin-primary); border: none;" data-bs-toggle="modal" data-bs-target="#addYeuCauModal">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-    Thêm yêu cầu
-  </button>
+  <div class="d-flex gap-2">
+    <button class="btn btn-outline-secondary d-flex align-items-center gap-2" data-bs-toggle="modal" data-bs-target="#importExcelModal">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+      Nhập Excel
+    </button>
+    <button class="btn btn-primary d-flex align-items-center gap-2 shadow-sm" style="background: var(--admin-primary); border: none;" data-bs-toggle="modal" data-bs-target="#addYeuCauModal">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+      Thêm yêu cầu
+    </button>
+  </div>
 </div>
 
 @if(session('success'))
@@ -187,5 +193,40 @@
   </div>
 </div>
 @endforeach
+
+<!-- Modal Import Excel -->
+<div class="modal fade" id="importExcelModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content border-0 shadow" style="background: var(--admin-card);">
+      <div class="modal-header border-bottom border-light">
+        <h5 class="modal-title fw-bold">Nhập yêu cầu từ Excel</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form action="{{ route('admin.khoahocyeucau.import') }}" method="POST" enctype="multipart/form-data" id="importExcelForm">
+          @csrf
+          <div class="mb-3">
+            <label class="form-label fw-medium">Chọn khóa học</label>
+            <select class="form-select" name="khoa_hoc_id" required>
+              <option value="">-- Chọn khóa học áp dụng --</option>
+              @foreach($khoaHocs as $khoaHoc)
+                <option value="{{ $khoaHoc->id }}" {{ request('khoa_hoc_id') == $khoaHoc->id ? 'selected' : '' }}>{{ $khoaHoc->ten_khoa_hoc }}</option>
+              @endforeach
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-medium">File Excel (.xlsx, .xls, .csv)</label>
+            <input type="file" class="form-control" name="file" accept=".xlsx, .xls, .csv" required>
+            <small class="text-muted mt-1 d-block">Lưu ý: File Excel phải có cột tiêu đề là <b>noi_dung</b> (bắt buộc) và <b>thu_tu</b> (tùy chọn).</small>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer border-top border-light">
+        <button type="button" class="btn btn-light" data-bs-dismiss="modal">Hủy</button>
+        <button type="button" class="btn btn-success" onclick="document.getElementById('importExcelForm').submit()">Tiến hành Nhập</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 @endsection
