@@ -6,7 +6,7 @@
       <div class="col-lg-6">
         <span class="hero-eyebrow-badge">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 16.8l-6.2 4.5 2.4-7.4L2 9.4h7.6z"/></svg>
-          Dành riêng cho người Việt học tiếng Trung
+          {{ $banner->badge_text ?? 'Dành riêng cho người Việt học tiếng Trung' }}
         </span>
         <style>
           .scan-effect-wrap {
@@ -48,14 +48,14 @@
             100% { translate: 0 -15px; }
           }
         </style>
-        <h1 class="font-head mt-3 mb-3">Học tiếng Trung theo <span class="scan-effect-wrap"><span class="text-primary-brand scan-effect-text">cách bạn thật sự nhớ</span><span class="scan-effect-cursor"></span></span></h1>
-        <p class="pinyin-tag mb-2">xué zhōngwén, jì zhù měi yīgè zì — học tiếng Trung, nhớ từng con chữ</p>
+        <h1 class="font-head mt-3 mb-3">{{ $banner->title_prefix ?? 'Học tiếng Trung theo' }} <span class="scan-effect-wrap"><span class="text-primary-brand scan-effect-text">{{ $banner->title_highlight ?? 'cách bạn thật sự nhớ' }}</span><span class="scan-effect-cursor"></span></span></h1>
+        <p class="pinyin-tag mb-2">{{ $banner->subtitle ?? 'xué zhōngwén, jì zhù měi yīgè zì — học tiếng Trung, nhớ từng con chữ' }}</p>
         <p class="fs-6 mb-4" style="color:var(--text-muted); max-width:520px;">
-          Từ vựng, ngữ pháp, luyện viết chữ Hán theo đúng nét bút, luyện nghe – nói – đọc, và ôn thi HSK — cùng một AI gia sư đồng hành mỗi ngày.
+          {{ $banner->description ?? 'Từ vựng, ngữ pháp, luyện viết chữ Hán theo đúng nét bút, luyện nghe – nói – đọc, và ôn thi HSK — cùng một AI gia sư đồng hành mỗi ngày.' }}
         </p>
         <div class="d-flex flex-wrap gap-3 mb-4">
-          <a href="#trial" class="btn-brand btn-lg">Bắt đầu học miễn phí</a>
-          <a href="#courses" class="btn-outline-brand btn-lg">Xem khóa học</a>
+          <a href="{{ $banner->button_primary_link ?? '#trial' }}" class="btn-brand btn-lg">{{ $banner->button_primary_text ?? 'Bắt đầu học miễn phí' }}</a>
+          <a href="{{ $banner->button_secondary_link ?? '#courses' }}" class="btn-outline-brand btn-lg">{{ $banner->button_secondary_text ?? 'Xem khóa học' }}</a>
         </div>
         <div class="d-flex flex-wrap gap-4 gap-md-5">
           <div class="hero-stat"><div class="num" data-count="{{ $stats['students'] ?? 120000 }}">0</div><div class="lbl">Học viên</div></div>

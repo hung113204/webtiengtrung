@@ -68,6 +68,12 @@
       </ul>
     </li>
     <li class="nav-item">
+      <a class="nav-link admin-nav-item {{ request()->routeIs('admin.banners.*') ? 'active' : '' }}" href="{{ route('admin.banners.index') }}">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+        Banners
+      </a>
+    </li>
+    <li class="nav-item">
       <a class="nav-link admin-nav-item {{ request()->routeIs('admin.tinhnang.*') ? 'active' : '' }}" href="{{ route('admin.tinhnang.index') }}">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
         Tính năng

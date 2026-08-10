@@ -40,8 +40,8 @@ class CauHinhController extends Controller
             'khoahoc_page_description' => 'nullable|string|max:1000',
             'home_features_title' => 'nullable|string|max:255',
             'home_features_subtitle' => 'nullable|string|max:255',
-            'website_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
-            'website_favicon' => 'nullable|image|mimes:jpeg,png,jpg,ico,webp|max:1024',
+            'website_logo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:5120',
+            'website_favicon' => 'nullable|image|mimes:jpeg,png,jpg,ico,webp|max:5120',
         ]);
 
         $fields = [

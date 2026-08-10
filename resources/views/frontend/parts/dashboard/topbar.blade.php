@@ -120,14 +120,14 @@
               @else
                 @foreach($latestNotifications as $tbnd)
                   <li>
-                    <a class="dropdown-item border-bottom py-2 {{ !$tbnd->da_doc ? 'bg-light' : '' }}" href="#" style="white-space: normal;">
+                    <a class="dropdown-item border-bottom py-2 {{ !$tbnd->da_doc ? 'bg-light' : '' }}" href="{{ route('frontend.thongbao.show', $tbnd->thongBao->id ?? 0) }}" style="white-space: normal;">
                       <strong class="d-block text-dark" style="font-size: 14px;">{{ $tbnd->thongBao->tieu_de ?? 'Thông báo' }}</strong>
-                      <small class="text-muted d-block mt-1" style="font-size: 12px; line-height: 1.4;">{{ Str::limit($tbnd->thongBao->noi_dung ?? '', 80) }}</small>
+                      <small class="text-muted d-block mt-1" style="font-size: 12px; line-height: 1.4;">{{ Str::limit(strip_tags($tbnd->thongBao->noi_dung ?? ''), 80) }}</small>
                       <small class="text-muted d-block mt-1" style="font-size: 11px;"><i class="bi bi-clock me-1"></i>{{ $tbnd->created_at ? $tbnd->created_at->diffForHumans() : '' }}</small>
                     </a>
                   </li>
                 @endforeach
-                <li><a class="dropdown-item text-center text-primary py-2 fw-semibold" href="#">Xem tất cả thông báo</a></li>
+                <li><a class="dropdown-item text-center text-primary py-2 fw-semibold" href="{{ route('frontend.thongbao.index') }}">Xem tất cả thông báo</a></li>
               @endif
             </ul>
           </div>

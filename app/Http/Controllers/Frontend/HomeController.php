@@ -50,7 +50,9 @@ class HomeController extends Controller
                 ->first();
         });
 
-        return view('frontend.home', compact('featuredCourses', 'stats', 'testimonials', 'loTrinh'));
+        $banner = \App\Models\Banner::where('is_active', true)->orderBy('thu_tu')->first();
+
+        return view('frontend.home', compact('featuredCourses', 'stats', 'testimonials', 'loTrinh', 'banner'));
     }
 
     public function dangKyHocThu(Request $request)

@@ -23,7 +23,7 @@ body::after {
 /* Hero */
 .courses-hero { text-align:center; padding: 0 0 3rem; }
 .courses-hero h1 {
-  font-family:'Poppins',sans-serif; font-weight:800; font-size:clamp(1.8rem,4vw,3rem);
+  font-family: var(--font-head); font-weight:800; font-size:clamp(1.8rem,4vw,3rem);
   background:linear-gradient(135deg,#1e293b,#ef4444); -webkit-background-clip:text;
   -webkit-text-fill-color:transparent; margin-bottom:1rem;
 }
@@ -144,6 +144,13 @@ body::after {
             <div class="cover" style="{{ $kh->anh_bia ? 'background-image:url('.asset('storage/'.$kh->anh_bia).');background-size:cover;background-position:center;' : '' }}">
               @if(!$kh->anh_bia)<span class="zh">汉</span>@endif
               <span class="level-badge">{{ $capDo ?? 'Cơ bản' }}</span>
+              
+              {{-- Nút Yêu thích --}}
+              <button class="btn-favorite-course shadow-sm" data-id="{{ $kh->id }}" aria-label="Yêu thích khóa học" style="position: absolute; top: 12px; right: 12px; z-index: 10; background: rgba(255,255,255,0.9); border: none; border-radius: 50%; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: transform 0.2s;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="{{ in_array($kh->id, $likedCourseIds ?? []) ? 'red' : 'none' }}" stroke="{{ in_array($kh->id, $likedCourseIds ?? []) ? 'red' : 'currentColor' }}" stroke-width="2">
+                  <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                </svg>
+              </button>
             </div>
             <div class="p-3 d-flex flex-column" style="height:calc(100% - 150px);">
               <h3 class="font-head fs-6 fw-bold mb-1">{{ $kh->ten_khoa_hoc }}</h3>
@@ -231,6 +238,55 @@ document.addEventListener('DOMContentLoaded', function () {
   // Search
   searchInput.addEventListener('input', applyFilters);
   document.querySelector('.btn-search').addEventListener('click', applyFilters);
+
+  // Favorite AJAX
+  document.querySelectorAll('.btn-favorite-course').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+      e.preventDefault();
+      e.stopPropagation(); // prevent clicking through to the course link
+      
+      const courseId = this.getAttribute('data-id');
+      const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+      
+      if (!token) {
+        alert('Vui lòng đăng nhập để yêu thích khóa học.');
+        window.location.href = '/login';
+        return;
+      }
+
+      fetch(`/khoa-hoc/${courseId}/yeu-thich`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRF-TOKEN': token,
+          'Accept': 'application/json'
+        }
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          const svg = this.querySelector('svg');
+          if (data.status === 'added') {
+            svg.setAttribute('fill', 'red');
+            svg.setAttribute('stroke', 'red');
+            this.style.transform = 'scale(1.2)';
+            setTimeout(() => this.style.transform = 'scale(1)', 200);
+          } else {
+            svg.setAttribute('fill', 'none');
+            svg.setAttribute('stroke', 'currentColor');
+          }
+        } else {
+          alert(data.message || 'Vui lòng đăng nhập để thực hiện.');
+          if(data.message === 'Vui lòng đăng nhập để thực hiện.') window.location.href = '/login';
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        alert('Vui lòng đăng nhập để thực hiện.');
+        window.location.href = '/login';
+      });
+    });
+  });
 });
 </script>
 @endpush

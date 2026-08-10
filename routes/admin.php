@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\DeThiController;
 use App\Http\Controllers\Admin\KetQuaLuyenThiController;
 use App\Http\Controllers\Admin\KhoaHocLoiIchController;
 use App\Http\Controllers\Admin\KhoaHocYeuCauController;
+use App\Http\Controllers\Admin\BannerController;
 
 // Admin Auth Routes
 Route::get('admin/login', [AuthController::class, 'index'])->name('admin.login');
@@ -51,6 +52,9 @@ Route::prefix('admin')->middleware(['web', 'auth', 'admin.teacher'])->group(func
     Route::resource('danhmuc', DanhMucKhoaHocController::class)->names('admin.danhmuc')->parameters([
         'danhmuc' => 'danhmuc'
     ]);
+
+    // Quản lý Banners
+    Route::resource('banners', BannerController::class)->names('admin.banners');
 
     // Quản lý Tính năng
     Route::resource('tinhnang', \App\Http\Controllers\Admin\TinhNangController::class)->names('admin.tinhnang')->parameters([

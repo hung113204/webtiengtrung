@@ -40,3 +40,8 @@ Route::get('/dashboard/luyen-thi-hsk/ket-qua/{phien_id}', [LuyentapClientControl
 // Lộ trình học AI
 Route::get('/dashboard/lo-trinh-ai', [AiLoTrinhController::class, 'index'])->name('frontend.dashboard.lotrinh_ai');
 Route::post('/dashboard/lo-trinh-ai/generate', [AiLoTrinhController::class, 'generate'])->name('frontend.dashboard.lotrinh_ai.generate');
+
+// Thông báo
+use App\Http\Controllers\Frontend\ThongBaoClientController;
+Route::get('/dashboard/thong-bao', [ThongBaoClientController::class, 'index'])->name('frontend.thongbao.index');
+Route::get('/dashboard/thong-bao/{id}', [ThongBaoClientController::class, 'show'])->name('frontend.thongbao.show');

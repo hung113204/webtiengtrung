@@ -127,8 +127,8 @@
                 <h2 class="font-head fs-6 fw-bold mb-0">
                   Tiến độ học trong tuần
                 </h2>
-                <span class="badge-soft bg-soft-success"
-                  >+18% so với tuần trước</span
+                <span class="badge-soft {{ $percentChange >= 0 ? 'bg-soft-success' : 'bg-soft-danger' }}" style="{{ $percentChange < 0 ? 'color: var(--danger);' : '' }}"
+                  >{{ $percentChange > 0 ? '+' : '' }}{{ $percentChange }}% so với tuần trước</span
                 >
               </div>
               <svg
@@ -211,8 +211,9 @@
                       @php
                         $isFavorited = in_array($dk->id_khoa_hoc, $yeuThichIds ?? []);
                       @endphp
-                      <button class="btn-favorite" data-id="{{ $dk->id_khoa_hoc }}" aria-label="Yêu thích khóa học" style="color: {{ $isFavorited ? 'red' : 'var(--primary)' }};">
-                        <svg width="15" height="15" viewBox="0 0 24 24" fill="{{ $isFavorited ? 'red' : 'none' }}" stroke="currentColor" stroke-width="2">
+                      {{-- Nút Yêu thích --}}
+                      <button class="btn-favorite-course shadow-sm" data-id="{{ $dk->id_khoa_hoc }}" aria-label="Yêu thích khóa học" style="position: absolute; top: 12px; right: 12px; z-index: 10; background: rgba(255,255,255,0.9); border: none; border-radius: 50%; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: transform 0.2s;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="{{ $isFavorited ? 'red' : 'none' }}" stroke="{{ $isFavorited ? 'red' : 'currentColor' }}" stroke-width="2">
                           <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                         </svg>
                       </button>
@@ -434,7 +435,7 @@
         // Theme toggle and sidebar toggle logic have been moved to layouts/dashboard.blade.php
 
         /* ---------- Bar chart (SVG, drawn via JS) ---------- */
-        const data = [40, 65, 50, 80, 55, 90, 70]; // % values for 7 days
+        const data = @json($chartData); // % values for 7 days
         const barsGroup = document.getElementById("chartBars");
         const chartW = 560,
           chartH = 180,
@@ -521,20 +522,14 @@
           });
 
         /* ---------- Favorite Button AJAX ---------- */
-        document.querySelectorAll('.btn-favorite').forEach(btn => {
+        document.querySelectorAll('.btn-favorite-course').forEach(btn => {
           btn.addEventListener('click', function(e) {
             e.preventDefault();
             const courseId = this.getAttribute('data-id');
             const svg = this.querySelector('svg');
-            const originalColor = this.style.color;
             
-            // Lấy CSRF token (giả định có thẻ meta name="csrf-token" trong layout chính)
             const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
-            
-            if (!token) {
-              console.error('CSRF token not found');
-              return;
-            }
+            if (!token) return;
 
             fetch(`/khoa-hoc/${courseId}/yeu-thich`, {
               method: 'POST',
@@ -548,12 +543,14 @@
             .then(data => {
               if (data.success) {
                 if (data.status === 'added') {
-                  this.style.color = 'red';
                   svg.setAttribute('fill', 'red');
+                  svg.setAttribute('stroke', 'red');
+                  this.style.transform = 'scale(1.2)';
+                  setTimeout(() => this.style.transform = 'scale(1)', 200);
                   toastBody.textContent = 'Đã thêm vào danh sách yêu thích!';
                 } else {
-                  this.style.color = 'var(--primary)';
                   svg.setAttribute('fill', 'none');
+                  svg.setAttribute('stroke', 'currentColor');
                   toastBody.textContent = 'Đã bỏ yêu thích khóa học!';
                 }
                 toastEl.classList.remove("text-bg-danger");

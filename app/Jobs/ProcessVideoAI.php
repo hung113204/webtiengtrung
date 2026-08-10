@@ -123,6 +123,17 @@ class ProcessVideoAI implements ShouldQueue
 
             $video->update(['hls_path' => $hlsPath, 'trang_thai' => 'hoan_thanh', 'phan_tram' => 100]);
 
+            // Dọn dẹp: Xóa file video gốc sau khi convert xong để tiết kiệm dung lượng
+            try {
+                if (Storage::disk('public')->exists($videoPath)) {
+                    Storage::disk('public')->delete($videoPath);
+                    // Cập nhật lại file_path là null vì đã xóa
+                    $video->update(['file_path' => null]);
+                }
+            } catch (\Exception $e) {
+                Log::warning("Không thể xóa file video gốc sau khi encode HLS " . $video->hash_id . ": " . $e->getMessage());
+            }
+
         } catch (\Exception $e) {
             Log::error("Lỗi xử lý video: " . $e->getMessage() . "\n" . $e->getTraceAsString());
             $video->update([

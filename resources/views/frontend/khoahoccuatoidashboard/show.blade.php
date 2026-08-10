@@ -535,8 +535,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
             });
+        } else if (sourceElement && video.canPlayType('application/vnd.apple.mpegurl')) {
+            // Hỗ trợ Native HLS cho Safari/iOS
+            video.src = sourceElement.src;
         }
-
 
     }
 

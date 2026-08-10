@@ -185,12 +185,6 @@
                     <div class="custom-progress">
                         <div class="custom-progress-bar" style="width: {{ $pt }}%;"></div>
                     </div>
-                    <div class="step-indicators">
-                        <div class="step-dot {{ $pt > 0 ? 'completed' : 'active' }}"></div>
-                        <div class="step-dot {{ $pt >= 33 ? ($pt > 33 ? 'completed' : 'active') : '' }}"></div>
-                        <div class="step-dot {{ $pt >= 66 ? ($pt > 66 ? 'completed' : 'active') : '' }}"></div>
-                        <div class="step-dot {{ $pt >= 100 ? 'completed' : '' }}"></div>
-                    </div>
                 </div>
             @elseif($video->trang_thai === 'dang_cho')
                 <span class="badge bg-warning bg-opacity-10 text-warning border border-warning-subtle">Đang chờ</span>

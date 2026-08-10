@@ -76,8 +76,9 @@
                 @php
                   $isFavorited = in_array($dk->id_khoa_hoc, $yeuThichIds ?? []);
                 @endphp
-                <button class="save-btn btn-favorite" data-id="{{ $dk->id_khoa_hoc }}" aria-label="Yêu thích khóa học" style="color: {{ $isFavorited ? 'red' : 'var(--primary)' }};">
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="{{ $isFavorited ? 'red' : 'currentColor' }}">
+                {{-- Nút Yêu thích --}}
+                <button class="btn-favorite-course shadow-sm" data-id="{{ $dk->id_khoa_hoc }}" aria-label="Yêu thích khóa học" style="position: absolute; top: 12px; right: 12px; z-index: 10; background: rgba(255,255,255,0.9); border: none; border-radius: 50%; width: 34px; height: 34px; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: transform 0.2s;">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="{{ $isFavorited ? 'red' : 'none' }}" stroke="{{ $isFavorited ? 'red' : 'currentColor' }}" stroke-width="2">
                     <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
                   </svg>
                 </button>
@@ -169,12 +170,11 @@
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     /* ---------- Favorite Button AJAX ---------- */
-    document.querySelectorAll('.btn-favorite').forEach(btn => {
+    document.querySelectorAll('.btn-favorite-course').forEach(btn => {
       btn.addEventListener('click', function(e) {
         e.preventDefault();
         const courseId = this.getAttribute('data-id');
         const svg = this.querySelector('svg');
-        const originalColor = this.style.color;
         
         // Lấy CSRF token
         const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
@@ -192,11 +192,13 @@
         .then(data => {
           if (data.success) {
             if (data.status === 'added') {
-              this.style.color = 'red';
               svg.setAttribute('fill', 'red');
+              svg.setAttribute('stroke', 'red');
+              this.style.transform = 'scale(1.2)';
+              setTimeout(() => this.style.transform = 'scale(1)', 200);
             } else {
-              this.style.color = 'var(--primary)';
-              svg.setAttribute('fill', 'currentColor'); // Vì ở trang này dùng currentColor cho icon rỗng
+              svg.setAttribute('fill', 'none');
+              svg.setAttribute('stroke', 'currentColor');
             }
           }
         })

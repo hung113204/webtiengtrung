@@ -26,7 +26,7 @@
 
       <div class="mb-2">
         <label class="form-label fw-medium">Mô tả chi tiết</label>
-        <textarea class="form-control @error('mo_ta') is-invalid @enderror" name="mo_ta" rows="6">{{ old('mo_ta', $khoahoc->mo_ta) }}</textarea>
+        <textarea class="form-control @error('mo_ta') is-invalid @enderror ckeditor" name="mo_ta" rows="6">{{ old('mo_ta', $khoahoc->mo_ta) }}</textarea>
         @error('mo_ta')<div class="invalid-feedback">{{ $message }}</div>@enderror
       </div>
     </div>

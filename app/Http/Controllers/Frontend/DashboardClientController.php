@@ -85,13 +85,56 @@ class DashboardClientController extends Controller
             ->pluck('id_khoa_hoc')
             ->toArray();
 
+        // --- Tính toán dữ liệu cho biểu đồ tiến độ ---
+        $startOfThisWeek = \Carbon\Carbon::now()->startOfWeek();
+        $endOfThisWeek = \Carbon\Carbon::now()->endOfWeek();
+        $startOfLastWeek = \Carbon\Carbon::now()->subWeek()->startOfWeek();
+        $endOfLastWeek = \Carbon\Carbon::now()->subWeek()->endOfWeek();
+
+        // Lấy dữ liệu học của tuần này, nhóm theo ngày
+        $thisWeekLogs = \App\Models\TienDoHoc::where('id_nguoi_dung', $user->id)
+            ->whereNotNull('lan_hoc_cuoi')
+            ->whereBetween('lan_hoc_cuoi', [$startOfThisWeek, $endOfThisWeek])
+            ->selectRaw('DATE(lan_hoc_cuoi) as date, COUNT(id) as total')
+            ->groupBy('date')
+            ->pluck('total', 'date');
+
+        // Mục tiêu: 5 bài học/ngày = 100%
+        $dailyGoal = 5;
+        $chartData = [];
+        $totalThisWeek = 0;
+
+        for ($i = 0; $i < 7; $i++) {
+            $dateString = $startOfThisWeek->copy()->addDays($i)->toDateString();
+            $count = $thisWeekLogs->has($dateString) ? $thisWeekLogs[$dateString] : 0;
+            $totalThisWeek += $count;
+            // Tính %, giới hạn tối đa 100%
+            $progressPercent = (int) min(100, round(($count / $dailyGoal) * 100));
+            $chartData[] = $progressPercent;
+        }
+
+        // Dữ liệu tuần trước
+        $totalLastWeek = \App\Models\TienDoHoc::where('id_nguoi_dung', $user->id)
+            ->whereNotNull('lan_hoc_cuoi')
+            ->whereBetween('lan_hoc_cuoi', [$startOfLastWeek, $endOfLastWeek])
+            ->count();
+
+        $percentChange = 0;
+        if ($totalLastWeek > 0) {
+            $percentChange = (int) round((($totalThisWeek - $totalLastWeek) / $totalLastWeek) * 100);
+        } elseif ($totalThisWeek > 0) {
+            $percentChange = 100;
+        }
+
         return view('frontend.dashboardclient.index', [
             'user' => $user,
             'hoSo' => $hoSo,
             'khoaHocDangKys' => $khoaHocDangKysPaginated,
             'soKhoaHoc' => $soKhoaHoc,
             'hoatDongs' => $hoatDongs,
-            'yeuThichIds' => $yeuThichIds
+            'yeuThichIds' => $yeuThichIds,
+            'chartData' => $chartData,
+            'percentChange' => $percentChange
         ]);
     }
 

@@ -216,7 +216,7 @@
 
           <div class="mb-3">
             <label class="form-label fw-medium">Nội dung chi tiết (Tùy chọn)</label>
-            <textarea class="form-control" name="noi_dung" rows="3" placeholder="Ghi chú, lý thuyết ngắn gọn..."></textarea>
+            <textarea class="form-control ckeditor" name="noi_dung" rows="3" placeholder="Ghi chú, lý thuyết ngắn gọn..."></textarea>
           </div>
 
 
@@ -327,7 +327,7 @@
 
           <div class="mb-3">
             <label class="form-label fw-medium">Nội dung chi tiết (Tùy chọn)</label>
-            <textarea class="form-control" name="noi_dung" rows="3">{{ $baiHoc->noi_dung }}</textarea>
+            <textarea class="form-control ckeditor" name="noi_dung" rows="3">{{ $baiHoc->noi_dung }}</textarea>
           </div>
 
 

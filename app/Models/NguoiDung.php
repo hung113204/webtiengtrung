@@ -316,4 +316,14 @@ class NguoiDung extends Authenticatable
         }
         return false;
     }
+
+    /**
+     * Mối quan hệ: Một người dùng có nhiều thông báo thông qua bảng trung gian.
+     */
+    public function thongBaos()
+    {
+        return $this->belongsToMany(ThongBao::class, 'thong_bao_nguoi_dung', 'id_nguoi_dung', 'id_thong_bao')
+                    ->withPivot('da_doc')
+                    ->withTimestamps();
+    }
 }

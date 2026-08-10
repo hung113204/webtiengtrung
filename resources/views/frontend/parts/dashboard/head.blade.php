@@ -1,11 +1,19 @@
-<meta charset="UTF-8" />
+    <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title', 'Bảng điều khiển — Hányǔ Bàn')</title>
     <meta
       name="description"
       content="Theo dõi tiến độ học tiếng Trung của bạn: streak, XP, khóa học đang học, lịch học."
     />
-
+    
+    @php
+        $faviconUrl = \App\Models\CauHinh::getByKey('website_favicon');
+    @endphp
+    @if($faviconUrl)
+        <link rel="icon" type="image/png" href="{{ Storage::url($faviconUrl) }}">
+        <link rel="shortcut icon" type="image/png" href="{{ Storage::url($faviconUrl) }}">
+    @endif
     <link
       href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
       rel="stylesheet"

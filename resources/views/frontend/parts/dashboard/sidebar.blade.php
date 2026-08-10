@@ -1,10 +1,16 @@
     <aside class="sidebar" id="sidebar">
       <div class="sidebar-brand">
-        <a href="{{ route('home') }}" class="d-flex align-items-center gap-2">
-          <span class="brand-mark zh">汉</span>
-          <span class="font-head fw-bold fs-6" style="color: var(--text)"
-            >Hányǔ Bàn</span
-          >
+        <a href="{{ route('home') }}" class="d-flex align-items-center gap-2 text-decoration-none">
+          @php
+              $logoUrl = \App\Models\CauHinh::getByKey('website_logo');
+              $websiteName = \App\Models\CauHinh::getByKey('website_name', 'Hányǔ Bàn');
+          @endphp
+          @if($logoUrl)
+              <img src="{{ Storage::url($logoUrl) }}" alt="{{ $websiteName }}" style="height: 36px; object-fit: contain; border-radius: 6px;">
+          @else
+              <span class="brand-mark zh">汉</span>
+          @endif
+          <span class="font-head fw-bold fs-6" style="color: var(--text)">{{ $websiteName }}</span>
         </a>
       </div>
       <nav class="sidebar-nav">

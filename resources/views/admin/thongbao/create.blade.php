@@ -40,7 +40,7 @@
 
           <div class="mb-3">
             <label for="noi_dung" class="form-label fw-bold text-secondary small">Nội dung chi tiết</label>
-            <textarea name="noi_dung" id="noi_dung" class="form-control rounded-3 border-0 bg-light p-3" rows="12" placeholder="Nhập nội dung chi tiết thông báo gửi đến học viên..." required>{{ old('noi_dung') }}</textarea>
+            <textarea name="noi_dung" id="noi_dung" class="form-control ckeditor rounded-3 border-0 bg-light p-3" rows="12" placeholder="Nhập nội dung chi tiết thông báo gửi đến học viên..." required>{{ old('noi_dung') }}</textarea>
           </div>
         </div>
 

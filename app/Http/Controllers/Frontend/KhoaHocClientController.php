@@ -37,7 +37,9 @@ class KhoaHocClientController extends Controller
             ->orderByDesc('created_at')
             ->get();
 
-        return view('frontend.khoahocclient.index', compact('khoaHocs'));
+        $likedCourseIds = auth()->check() ? \App\Models\YeuThichKhoaHoc::where('id_nguoi_dung', auth()->id())->pluck('id_khoa_hoc')->toArray() : [];
+
+        return view('frontend.khoahocclient.index', compact('khoaHocs', 'likedCourseIds'));
     }
 
     public function show($slug)
@@ -76,7 +78,9 @@ class KhoaHocClientController extends Controller
                 ->first();
         }
 
-        return view('frontend.khoahocclient.show', compact('khoaHoc', 'tongBaiHoc', 'tongThoiLuongGiay', 'enrollment'));
+        $isFavorited = auth()->check() ? \App\Models\YeuThichKhoaHoc::where('id_nguoi_dung', auth()->id())->where('id_khoa_hoc', $khoaHoc->id)->exists() : false;
+
+        return view('frontend.khoahocclient.show', compact('khoaHoc', 'tongBaiHoc', 'tongThoiLuongGiay', 'enrollment', 'isFavorited'));
     }
    public function trialLesson($baiHocSlug)
 {

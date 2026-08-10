@@ -355,26 +355,34 @@
                 {{-- Nút đăng ký --}}
                 @auth
                     @if($enrollment && $enrollment->trang_thai == 'Đã duyệt')
-                        <a href="{{ route('frontend.dashboard.khoahoc.show', $khoaHoc->slug) }}" class="btn-brand w-100 btn-lg mb-3 d-block text-center" style="border-radius:12px;">
+                        <a href="{{ route('frontend.dashboard.khoahoc.show', $khoaHoc->slug) }}" class="btn-brand w-100 btn-lg mb-2 d-block text-center" style="border-radius:12px;">
                             Vào học ngay
                         </a>
                     @elseif($enrollment && $enrollment->trang_thai == 'Chờ duyệt')
-                        <button type="button" class="btn-brand w-100 btn-lg mb-3 d-block text-center" style="border-radius:12px; border:none; background-color: var(--warning); color: #000;" disabled>
+                        <button type="button" class="btn-brand w-100 btn-lg mb-2 d-block text-center" style="border-radius:12px; border:none; background-color: var(--warning); color: #000;" disabled>
                             Đang chờ duyệt
                         </button>
                     @else
                         <form action="{{ route('khoahoc.register', $khoaHoc->slug) }}" method="POST">
                             @csrf
-                            <button type="submit" class="btn-brand w-100 btn-lg mb-3 d-block text-center" style="border-radius:12px; border:none;">
+                            <button type="submit" class="btn-brand w-100 btn-lg mb-2 d-block text-center" style="border-radius:12px; border:none;">
                                 Đăng ký khóa học
                             </button>
                         </form>
                     @endif
                 @else
-                    <a href="{{ route('login') }}" class="btn-brand w-100 btn-lg mb-3 d-block text-center" style="border-radius:12px;">
+                    <a href="{{ route('login') }}" class="btn-brand w-100 btn-lg mb-2 d-block text-center" style="border-radius:12px;">
                         Đăng nhập để đăng ký
                     </a>
                 @endauth
+
+                {{-- Nút Yêu thích --}}
+                <button type="button" class="btn btn-outline-secondary w-100 btn-lg mb-3 d-flex align-items-center justify-content-center btn-favorite-detail" data-id="{{ $khoaHoc->id }}" style="border-radius:12px; gap: 8px;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="{{ $isFavorited ? 'red' : 'none' }}" stroke="{{ $isFavorited ? 'red' : 'currentColor' }}" stroke-width="2">
+                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                    </svg>
+                    <span class="favorite-text">{{ $isFavorited ? 'Đã yêu thích' : 'Yêu thích' }}</span>
+                </button>
                 <div class="text-center mb-4" style="font-size:0.85rem; color:var(--text-muted);">Đảm bảo hoàn tiền trong 7 ngày</div>
 
                 <hr style="border-color:var(--border);">
@@ -477,6 +485,52 @@ document.querySelectorAll('.rating-input span').forEach(star => {
                 s.textContent = '☆';
             }
         });
+    });
+});
+
+// Favorite AJAX Detail
+document.querySelector('.btn-favorite-detail')?.addEventListener('click', function(e) {
+    e.preventDefault();
+    const courseId = this.getAttribute('data-id');
+    const token = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content');
+    
+    if (!token) {
+        alert('Vui lòng đăng nhập để yêu thích khóa học.');
+        window.location.href = '/login';
+        return;
+    }
+
+    fetch(`/khoa-hoc/${courseId}/yeu-thich`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-TOKEN': token,
+            'Accept': 'application/json'
+        }
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            const svg = this.querySelector('svg');
+            const text = this.querySelector('.favorite-text');
+            if (data.status === 'added') {
+                svg.setAttribute('fill', 'red');
+                svg.setAttribute('stroke', 'red');
+                text.textContent = 'Đã yêu thích';
+            } else {
+                svg.setAttribute('fill', 'none');
+                svg.setAttribute('stroke', 'currentColor');
+                text.textContent = 'Yêu thích';
+            }
+        } else {
+            alert(data.message || 'Vui lòng đăng nhập để thực hiện.');
+            if(data.message === 'Vui lòng đăng nhập để thực hiện.') window.location.href = '/login';
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        alert('Vui lòng đăng nhập để thực hiện.');
+        window.location.href = '/login';
     });
 });
 </script>

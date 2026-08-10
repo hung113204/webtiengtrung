@@ -12,28 +12,34 @@
       /* Specialized styles for login page */
       .login-page {
         min-height: 100vh;
+        width: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
-        background: linear-gradient(135deg, var(--admin-bg) 0%, rgba(220,38,38,0.05) 100%);
+        background: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.6)), url('{{ asset('backend/asset/images/login_bg.png') }}') center/cover no-repeat;
       }
       [data-theme="dark"] .login-page {
-        background: linear-gradient(135deg, var(--admin-bg) 0%, rgba(220,38,38,0.1) 100%);
+        background: linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.9)), url('{{ asset('backend/asset/images/login_bg.png') }}') center/cover no-repeat;
       }
       
       .login-card {
         width: 100%;
         max-width: 440px;
-        background: var(--admin-card);
-        border: 1px solid var(--admin-border);
+        background: rgba(255, 255, 255, 0.75);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.5);
         border-radius: 16px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+        box-shadow: 0 20px 40px rgba(0,0,0,0.08);
         padding: 2.5rem;
         position: relative;
+        z-index: 1;
         overflow: hidden;
       }
       
       [data-theme="dark"] .login-card {
+        background: rgba(15, 23, 42, 0.75);
+        border: 1px solid rgba(255, 255, 255, 0.1);
         box-shadow: 0 10px 25px rgba(0,0,0,0.2);
       }
 

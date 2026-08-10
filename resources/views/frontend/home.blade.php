@@ -34,10 +34,10 @@
     }
     
     // Khởi tạo hoạt ảnh viết chữ lần lượt
-    initWriter('hz-ni', '你', 0);
-    initWriter('hz-hao', '好', 1000);
-    initWriter('hz-xue', '学', 2000);
-    initWriter('hz-zhong', '中', 3000);
+    initWriter('hz-ni', '{{ $banner->grid_char_1 ?? '你' }}', 0);
+    initWriter('hz-hao', '{{ $banner->grid_char_2 ?? '好' }}', 1000);
+    initWriter('hz-xue', '{{ $banner->grid_char_3 ?? '学' }}', 2000);
+    initWriter('hz-zhong', '{{ $banner->grid_char_4 ?? '中' }}', 3000);
   });
 </script>
 @endpush
